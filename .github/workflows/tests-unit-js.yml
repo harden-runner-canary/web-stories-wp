@@ -1,33 +1,7 @@
 name: JavaScript Unit Tests
 
 on:
-  push:
-    # Only run if JS-related files changed.
-    paths:
-      - '**.js'
-      - '**.cjs'
-      - '**.ts'
-      - '**/package.json'
-      - 'package-lock.json'
-      - 'packages/templates/src/raw/**'
-      - 'packages/text-sets/src/raw/**'
-      - 'patches/**'
-      - 'packages/fonts/src/fonts.json'
-    branches:
-      - main
-      - release/*
-  pull_request:
-    # Only run if JS-related files changed.
-    paths:
-      - '**.js'
-      - '**.cjs'
-      - '**.ts'
-      - '**/package.json'
-      - 'package-lock.json'
-      - 'packages/templates/src/raw/**'
-      - 'packages/text-sets/src/raw/**'
-      - 'patches/**'
-      - 'packages/fonts/src/fonts.json'
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -49,9 +23,18 @@ jobs:
         shard: ['1/2', '2/2']
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@2e205a28d0e1da00c5f53b161f4067b052c61f34
+        uses: step-security/harden-runner@rc
         with:
-          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+          disable-sudo: true
+          egress-policy: block
+          allowed-endpoints: >
+            cdn.ampproject.org:443
+            codecov.io:443
+            github.com:443
+            nodejs.org:443
+            raw.githubusercontent.com:443
+            registry.npmjs.org:443
+            uploader.codecov.io:443
 
       - name: Checkout
         uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
