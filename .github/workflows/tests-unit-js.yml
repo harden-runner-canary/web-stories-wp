@@ -23,12 +23,12 @@ jobs:
         shard: ['1/2', '2/2']
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@rc
+        uses: step-security/harden-runner@int
         with:
           disable-sudo: true
           egress-policy: block
           allowed-endpoints: >
-            cdn.ampproject.org:443
+            *.ampproject.org:443
             codecov.io:443
             github.com:443
             nodejs.org:443
